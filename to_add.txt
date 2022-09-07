@@ -1,0 +1,5 @@
+- Add cube roll command, syntax: ">roll [amount]d[cube]"
+-
+-
+-
+-
