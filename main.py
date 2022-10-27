@@ -15,6 +15,7 @@ token = os.getenv('token')
 import keepalive
 import time
 
+keepalive.awake("https://Astral-Defender.plasmium.repl.co", )
 
 # Randog
 class randomPicture:
@@ -542,7 +543,7 @@ def returnSkills(valueDict):
 	if len(valueDict["Skills"].keys()) > 0:
 		for key, value in valueDict["Skills"].items():
 			skillThresholds = {0:"Unskilled ", 15:"Novice ", 30:"Apprentice ", 50:"Journeyman ", 65:"Adept ", 80:"Minor ", 95:"Major ", 110:"Expert ", 125:"Master ", 140:"Grandmaster ", 180:"Legendary ", 200:"Ascendant ", 250:"Transcendant ", 400:"Eminent ", 401:"Peerless "}
-			sinVirtThresholds = {25:"", 50:"Knight of ", 75:"Lord of ", 100:"Baron of ", 125:"Viscount of ", 150:"Count of ", 175:"Earl of ", 200:"Marquis of ", 225:"Duke of ", 250:"King of ", 275:"Emperor of ", 300:"Dominion of ", 325:"Decimator of ", 350:"Gatekeeper of ", 375:"Soulborne of ", 400:"Embodiment of ", 401:"Epitome of "}
+			sinVirtThresholds = {25:"", 50:"Knight of ", 75:"Lord of ", 100:"Baron of ", 125:"Viscount of ", 150:"Count of ", 175:"Earl of ", 200:"Marquis of ", 225:"Duke of ", 250:"King of ", 275:"Emperor of ", 300:"Dominion of ", 325:"Symbol of ", 350:"Incarnation of ", 375:"Soulborne of ", 400:"Embodiment of ", 401:"Epitome of "}
 			sinVirts = ["Lust", "Gluttony", "Greed", "Pride", "Wrath", "Sloth", "Envy", "Justice", "Bravery", "Charity", "Kindness", "Patience", "Hope", "Faith"]
 			namePrefix = ""
 			if key in sinVirts:
@@ -554,12 +555,16 @@ def returnSkills(valueDict):
 						pass
 				
 			else:
-				for key2, value2 in skillThresholds.items():
-					if value < key2:
-						namePrefix = value2
-						break
-					elif value >= key2:
-						pass
+				if value == 400:
+					namePrefix = "Peerless "
+				else:
+					value3 = value % 400
+					for key2, value2 in skillThresholds.items():
+						if value3 < key2:
+							namePrefix = value2
+							break
+						elif value3 >= key2:
+							pass
 			string += namePrefix
 			string += key + " " + str(value)
 			if list(valueDict["Skills"].keys())[-1] != key:
@@ -588,6 +593,23 @@ def int_to_Roman(num):
 		i += 1
 	return roman_num
 
+def properTitle(inp):
+    inp = inp.split(" ")
+    inp[0] = inp[0].capitalize()
+    inp[-1] = inp[-1].capitalize()
+    n = 1
+    for i in inp[1:-1]:
+        if i.lower() not in ("in", "for", "of", "a", "an", "and", "on", "the"):
+            inp[n] = i.title()
+        n += 1
+    ret = ""
+    for i in inp:
+        ret += i + " "
+    ret = ret.strip()
+    return ret
+
+
+
 def returnAbilities(valueDict):
 	string = ""
 	if len(valueDict["Abilities"].keys()) > 0:
@@ -609,7 +631,7 @@ def returnEnergies(valueDict):
 				string += returnItemBonusBar(valueDict, key)
 
 	else:
-		string = "No magic."
+		string = "\nNo magic."
 	return string
 
 def returnMoney(valueDict):
@@ -727,6 +749,7 @@ returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + r
 			titlesString += ", "
 	embed.add_field(name="Titles", value=titlesString, inline=False)
 	embed.add_field(name="Rank", value=returnCharacterRank(temp), inline=False)
+    
 	embed.add_field(name="Money", value=returnMoney(temp), inline=False)
 	embed.add_field(name="Core Stats", value=temp["Stat String"], inline=False)
 	embed.add_field(name="Skills:", value=returnSkills(temp), inline=False)
@@ -1009,15 +1032,17 @@ async def removeTitle(ctx, name="", title=""):
 @bot.command(name="add-ability", pass_context=True, aliases=["a-a", "Add-Ability", "Add-ability"])
 @commands.has_permissions(administrator=True)
 async def addAbility(ctx, name="", *abilities):
-	name = name.title()
-	if name not in db[ctx.guild.name].keys():
-		await ctx.send(name + " is not a valid character.")
-		return
-	temp = db[ctx.guild.name][name]
-	for i in abilities:
-		i = i.title()
-		temp["Abilities"].update({i:1})
-	await ctx.send("Added to " + name + "'s abilities")
+    name = name.title()
+    if name not in db[ctx.guild.name].keys():
+        await ctx.send(name + " is not a valid character.")
+        return
+    temp = db[ctx.guild.name][name]
+    a = dict(temp["Abilities"])
+    for i in abilities:
+        i = properTitle(i)
+        a.update({i:1})
+    temp["Abilities"] = a
+    await ctx.send("Added to " + name + "'s abilities")
 
 @bot.command(name="level-ability", pass_context=True, aliases=["l-a", "Level-Ability", "Level-ability"])
 @commands.has_permissions(administrator=True)
@@ -1341,6 +1366,5 @@ async def allPerms(ctx, roleName="Roleban"):
         
 
 
-keepalive.keep_alive()
 
 bot.run(token)
