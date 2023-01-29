@@ -25,33 +25,33 @@ class randomPicture:
 		self.name = name;
 
 timPics = [
-	randomPicture("staretim.jpeg", 			10, 	"Stare"),
-	randomPicture("sittim.jpeg", 			10, 	"Sit"),
-	randomPicture("windowtim.jpeg", 		10, 	"Window"),
-	randomPicture("leafytim.jpeg", 			5, 		"Leaves"),
-	randomPicture("timshirt.jpeg", 			5, 		"Shirt"),
-	randomPicture("timblanket.jpeg", 		5, 		"Blanket"),
-	randomPicture("timdogbed.jpeg", 		15, 	"Dog Bed"),
-	randomPicture("shirttim.jpeg", 			1, 		"MACCABI HAIFA"),
-	randomPicture("timcutesuper.jpeg", 		1, 		"Cute Super-Dog"),
-	randomPicture("curled.jpeg", 			3, 		"Curled"),
-	randomPicture("timrun.MP4", 			15, 	"Run"),
-	randomPicture("grasstim.jpeg", 			10, 	"Grassy Tim"),
-	randomPicture("ohnotim.jpeg", 			3, 		"Murderer Duo"),
-	randomPicture("trusttim.jpeg", 			10, 	"Trust the Tim"),
-	randomPicture("timnsmall.jpeg", 		5, 		"Meeting"),
-	randomPicture("cartim.jpeg", 			10, 	"Tim doesn't like car rides"),
-	randomPicture("timbirdride.jpeg", 		15, 	"Tim bird ride"),
-	randomPicture("gaytim.jpeg", 			15, 	"Sorry, but our Tim is in another castle"),
-	randomPicture("firstmeeting.jpeg", 		5, 		"Hello there"),
-	randomPicture("timdoll.jpeg", 			10,	 	"Tim chew doll"),
-	randomPicture("selphieTim.jpeg", 		15, 	"Zoomed in sleeping Tim"),
-	randomPicture("timwakeup.jpeg", 		15, 	"Tim wakeup"),
-	randomPicture("smilebitch.jpeg", 		1, 		"Smile, bitch"),
-	randomPicture("selfietim.jpeg", 		5, 		"Tim selfie"),
-	randomPicture("arabtim.jpeg", 			3, 		"Arab Tim"),
-	randomPicture("yogatim.jpeg", 			15, 	"Tim stretch"),
-	randomPicture("underTableTim.jpeg", 	10, 	"Tim under a table")
+	randomPicture("images/staretim.jpeg", 			10, 	"Stare"),
+	randomPicture("images/sittim.jpeg", 			10, 	"Sit"),
+	randomPicture("images/windowtim.jpeg", 		10, 	"Window"),
+	randomPicture("images/leafytim.jpeg", 			5, 		"Leaves"),
+	randomPicture("images/timshirt.jpeg", 			5, 		"Shirt"),
+	randomPicture("images/timblanket.jpeg", 		5, 		"Blanket"),
+	randomPicture("images/timdogbed.jpeg", 		15, 	"Dog Bed"),
+	randomPicture("images/shirttim.jpeg", 			1, 		"MACCABI HAIFA"),
+	randomPicture("images/timcutesuper.jpeg", 		1, 		"Cute Super-Dog"),
+	randomPicture("images/curled.jpeg", 			3, 		"Curled"),
+	randomPicture("images/timrun.MP4", 			15, 	"Run"),
+	randomPicture("images/grasstim.jpeg", 			10, 	"Grassy Tim"),
+	randomPicture("images/ohnotim.jpeg", 			3, 		"Murderer Duo"),
+	randomPicture("images/trusttim.jpeg", 			10, 	"Trust the Tim"),
+	randomPicture("images/timnsmall.jpeg", 		5, 		"Meeting"),
+	randomPicture("images/cartim.jpeg", 			10, 	"Tim doesn't like car rides"),
+	randomPicture("images/timbirdride.jpeg", 		15, 	"Tim bird ride"),
+	randomPicture("images/gaytim.jpeg", 			15, 	"Sorry, but our Tim is in another castle"),
+	randomPicture("images/firstmeeting.jpeg", 		5, 		"Hello there"),
+	randomPicture("images/timdoll.jpeg", 			10,	 	"Tim chew doll"),
+	randomPicture("images/selphieTim.jpeg", 		15, 	"Zoomed in sleeping Tim"),
+	randomPicture("images/timwakeup.jpeg", 		15, 	"Tim wakeup"),
+	randomPicture("images/smilebitch.jpeg", 		1, 		"Smile, bitch"),
+	randomPicture("images/selfietim.jpeg", 		5, 		"Tim selfie"),
+	randomPicture("images/arabtim.jpeg", 			3, 		"Arab Tim"),
+	randomPicture("images/yogatim.jpeg", 			15, 	"Tim stretch"),
+	randomPicture("images/underTableTim.jpeg", 	10, 	"Tim under a table")
 ]
 
 # Rolling variables
@@ -259,6 +259,11 @@ async def messagemonitor(message): #Anti-Scam
 			await message.delete()
 		except:
 			pass
+	elif "https://images-ext-2.discordapp.net/external/WlCcgtV_C1ygC7rErRTbj4kUc5A6mqE_bG6TW2KoM1A/https/media.tenor.com/pyUTSY5MeusAAAPo/makima.mp4" in message.content or "https://tenor.com/view/makima-gif-26321924" in message.content:
+		try:
+			await message.delete()
+		except:
+			pass
 		
 
 modlist = (454820620824215553, 423798867868516373, 681931899584905390, 945430077863243797)
@@ -322,7 +327,7 @@ async def on_guild_role_delete(ctx):
 
 @bot.event
 async def on_guild_join(guild):
-	db[guild.name] = {}
+	db[str(guild.id)] = {}
 	
 
 
@@ -404,7 +409,7 @@ async def help(ctx, entry="", page=1):
 @bot.command(name="dogsleep", pass_context=True)
 async def dogsleep(ctx):
 	await ctx.send("Sleeping Tim!")
-	await ctx.send(file=discord.File('dogsleep.jpeg'))
+	await ctx.send(file=discord.File('images/dogsleep.jpeg'))
 
 # Translate command
 """@bot.command(name="translate", pass_context=True)	
@@ -652,7 +657,7 @@ async def createCharacter(ctx, name="", race="", sinVirtue=""):
 		await ctx.send("Please enter a name.")
 		return
 	name = name.title()
-	if name in db[ctx.guild.name].keys():
+	if name in db[str(ctx.guild.id)].keys():
 		await ctx.send("Character already exists here.")
 		return
 	if race == "":
@@ -664,20 +669,20 @@ async def createCharacter(ctx, name="", race="", sinVirtue=""):
 		startingTitle = race.title()
 	race = race.title()
 	playerDict = {"Name":name, "Race":race, "Sin/Virtue":sinVirtue, "Str":randint(11, 30), "Con":con, "Dex":randint(11, 30), "Agi":randint(11, 30), "Per":randint(11, 30), "Int":randint(11, 30), "Wis":wis, "Current HP":con*10, "Max HP":con*10, "Energies":{"MP":[wis*5, wis*5]}, "Titles":[startingTitle], "Skills":{}, "Abilities":{}, "Item Bonuses":{"Str":{}, "Con":{}, "Dex":{}, "Agi":{}, "Per":{}, "Int":{}, "Wis":{}}, "Currencies":{}}
-	db[ctx.guild.name][name.title()] = playerDict
-	temp = db[ctx.guild.name][name]
+	db[str(ctx.guild.id)][name.title()] = playerDict
+	temp = db[str(ctx.guild.id)][name]
 	bonuses = temp["Item Bonuses"]
 	playerDict.update({"Stat String":("**HP**: " + str(temp["Current HP"]) + "/" + str(temp["Max HP"]) + returnEnergies(temp) + "\n\n**Str**: " + str(temp["Str"]) + " " + returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + returnItemBonusDict(bonuses, "Con") + "\n**Dex**: " + str(temp["Dex"]) + " " + returnItemBonusDict(bonuses, "Dex") + "\n**Agi**: " + str(temp["Agi"]) + " " + returnItemBonusDict(bonuses, "Agi") + "\n**Per**: " + str(temp["Per"]) + " " + returnItemBonusDict(bonuses, "Per") + "\n**Int**: " + str(temp["Int"]) + " " + returnItemBonusDict(bonuses, "Int") + "\n**Wis**: " + str(temp["Wis"]) + " " + returnItemBonusDict(bonuses, "Wis"))})
-	db[ctx.guild.name][name.title()] = playerDict
+	db[str(ctx.guild.id)][name.title()] = playerDict
 	await ctx.send("Created character " + name)
 
 @bot.command(name="check-character", pass_context=True, aliases=["c-c", "Check-Character", "Check-character"])
 async def checkCharacter(ctx, name="", inSetStats=False):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	embed = discord.Embed(title=(name + "'s Character Sheet"), description=("The following is their Astral Fantasy character sheet:\n" + temp["Name"] + ":"))
 	titlesString = ""
 	for i in temp["Titles"]:
@@ -695,16 +700,41 @@ async def checkCharacter(ctx, name="", inSetStats=False):
 	else:
 		await ctx.send(embed=embed)
 
+@bot.command(name="copy-character", pass_context=True, aliases=["cc-c"])
+@commands.has_permissions(administrator=True)
+async def copyCharacter(ctx, fromID=0, toID=0, name=""):
+	if fromID == 0:
+		print("Please enter a server ID to copy from.")
+	if toID == 0:
+		print("Please enter a server ID to copy to.")
+	if name == "":
+		print("Please enter a character name.")
+	val1 = db[str(fromID)][name]
+	val1 = dict(val1)
+	val1["Energies"] = dict(val1["Energies"])
+	for key2, val2 in val1["Energies"].items():
+		val1["Energies"][key2] = list(val2)
+	val1["Titles"] = list(val1["Titles"])
+	val1["Skills"] = dict(val1["Skills"])
+	val1["Currencies"] = dict(val1["Currencies"])
+	val1["Abilities"] = dict(val1["Abilities"])
+	val1["Item Bonuses"] = dict(val1["Item Bonuses"])
+	for key2, val2 in val1["Item Bonuses"].items():
+		val1["Item Bonuses"][key2] = dict(val2)
+	db[str(toID)][name] = val1
+	print("Data successfully migrated.")
+	
+	
 
 
 @bot.command(name="add-stat", pass_context=True, aliases=["a-s", "Add-Stat", "Add-stat"])
 @commands.has_permissions(administrator=True)
 async def addStat(ctx, name="", *furtherStats):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	i = 0
 	bonuses = temp["Item Bonuses"]
 	while i < len(furtherStats):
@@ -760,10 +790,10 @@ returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + r
 @commands.has_permissions(administrator=True)
 async def setStat(ctx, name="", *furtherStats):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	i = 0
 	bonuses = temp["Item Bonuses"]
 	while i < len(furtherStats):
@@ -829,22 +859,22 @@ def find_nth(haystack, needle, n):
 async def renameCharacter(ctx, name="", newName=""):
 	name = name.title()
 	newName = newName.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send("Please enter a valid character name to rename.")
 		return
 	if newName == "":
 		await ctx.send("Please enter a new name to rename.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	temp["Name"] = newName
-	db[ctx.guild.name][newName] = temp
-	del db[ctx.guild.name][name]
+	db[str(ctx.guild.id)][newName] = temp
+	del db[str(ctx.guild.id)][name]
 	await ctx.send("Renamed " + name + " to " + newName + ".")
 
 @bot.command(name="list-characters", pass_context=True, aliases=["l-c", "List-Characters", "List-characters"])
 @commands.cooldown(1, 30, commands.BucketType.guild)
 async def listCharacters(ctx, page=0):
-	totalList = list(db[ctx.guild.name].keys())
+	totalList = list(db[str(ctx.guild.id)].keys())
 	string = ""
 	thisList = totalList[10*page:10*(page+1)]
 	for i in thisList:
@@ -866,13 +896,13 @@ async def on_command_error(ctx, error):
 async def setRace(ctx, name="", race=""):
 	name = name.title()
 	race = race.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send("Please input a valid name.")
 		return
 	if race == "":
 		await ctx.send("Please input a race.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	temp["Race"] = race
 	
 	if temp["Sin/Virtue"] != "":
@@ -922,10 +952,10 @@ async def roll(ctx, *args):
 @commands.has_permissions(administrator=True)
 async def generateInitialSkills(ctx, name="", *skillsList):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	for i in skillsList:
 		i = i.title()
 		try:
@@ -948,10 +978,10 @@ async def removeSkills(ctx, name="", skill=""):
 	name = name.title()
 	skill = skill.title()
 	
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 
 	if skill not in temp["Skills"]:
 		await ctx.send(name + " doesn't have this skill to remove.")
@@ -963,10 +993,10 @@ async def removeSkills(ctx, name="", skill=""):
 @commands.has_permissions(administrator=True)
 async def addToSkills(ctx, name, *skills):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a generated character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	for i in range(0, len(skills)-1):
 		try:
 			if type(int(skills[i])) == int:
@@ -995,7 +1025,7 @@ async def deleteCharacter(ctx, name=""):
 		name = msg
 		name = name.title()
 	try:
-		del db[ctx.guild.name][name]
+		del db[str(ctx.guild.id)][name]
 		await ctx.send(name + " has been deleted.")
 	except KeyError:
 		await ctx.send(name + " is not a valid character to be deleted.")
@@ -1010,7 +1040,7 @@ async def addTitle(ctx, name="", title=""):
 	if title == "":
 		await ctx.send("Please input a title to add.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	temp["Titles"].append(title)
 	await ctx.send(title + " has been added to " + name + "'s titles.")
 
@@ -1021,7 +1051,7 @@ async def removeTitle(ctx, name="", title=""):
 	if name == "":
 		await ctx.send("Please input a name.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if title not in temp["Titles"]:
 		await ctx.send(title + " is not one of " + name + "'s titles.")
 		return
@@ -1033,10 +1063,10 @@ async def removeTitle(ctx, name="", title=""):
 @commands.has_permissions(administrator=True)
 async def addAbility(ctx, name="", *abilities):
     name = name.title()
-    if name not in db[ctx.guild.name].keys():
+    if name not in db[str(ctx.guild.id)].keys():
         await ctx.send(name + " is not a valid character.")
         return
-    temp = db[ctx.guild.name][name]
+    temp = db[str(ctx.guild.id)][name]
     a = dict(temp["Abilities"])
     for i in abilities:
         i = properTitle(i)
@@ -1048,10 +1078,10 @@ async def addAbility(ctx, name="", *abilities):
 @commands.has_permissions(administrator=True)
 async def levelAbility(ctx, name="", ability="", level=0):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	ability = ability.title()
 	if ability not in temp["Abilities"]:
 		await ctx.send(ability + " is not one of " + name + "'s abilities.")
@@ -1067,10 +1097,10 @@ async def levelAbility(ctx, name="", ability="", level=0):
 async def removeAbility(ctx, name="", ability=""):
 	name = name.title()
 	ability = ability.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if ability not in temp["Abilities"]:
 		await ctx.send(ability + " is not one of " + name + "'s abilities.")
 		return
@@ -1082,7 +1112,7 @@ async def removeAbility(ctx, name="", ability=""):
 async def addEnergy(ctx, name="", energy="", startingMaximum=100):
 	name = name.title()
 	energy = energy.upper()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
 	if energy == "":
@@ -1093,7 +1123,7 @@ async def addEnergy(ctx, name="", energy="", startingMaximum=100):
 	except:
 		await ctx.send("Starting " + energy + " amount is not a number.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if energy in temp["Energies"].keys():
 		await ctx.send("The energy type requested is already in " + name + "'s possession.")
 		return
@@ -1117,10 +1147,10 @@ returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + r
 async def removeEnergy(ctx, name="", energy=""):
 	name = name.title()
 	energy = energy.upper()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if energy not in temp["Energies"].keys():
 		await ctx.send(name + " does not have this energy type to remove.")
 		return
@@ -1134,13 +1164,13 @@ returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + r
 @commands.has_permissions(administrator=True)
 async def addCurrency(ctx, name="", currency="", amount=0):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
 	if currency == "":
 		await ctx.send("Please enter a currency.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	try:
 		amount = int(amount)
 	except:
@@ -1161,10 +1191,10 @@ async def addCurrency(ctx, name="", currency="", amount=0):
 @commands.has_permissions(administrator=True)
 async def removeCurrency(ctx, name="", currency=""):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if currency not in temp["Currencies"].keys():
 		await ctx.send(name + " does not have this currency.")
 		return
@@ -1175,10 +1205,10 @@ async def removeCurrency(ctx, name="", currency=""):
 @commands.has_permissions(administrator=True)
 async def addItemBonus(ctx, name="", itemBonusName="", bonusStat="", bonusAmount=0):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	if itemBonusName == "":
 		await ctx.send("Please enter a proper name for the item bonus.")
 		return
@@ -1216,10 +1246,10 @@ returnItemBonusDict(bonuses, "Str") + "\n**Con**: " + str(temp["Con"]) + " " + r
 @commands.has_permissions(administrator=True)
 async def removeItemBonus(ctx, name="", stat="", bonusName=""):
 	name = name.title()
-	if name not in db[ctx.guild.name].keys():
+	if name not in db[str(ctx.guild.id)].keys():
 		await ctx.send(name + " is not a valid character.")
 		return
-	temp = db[ctx.guild.name][name]
+	temp = db[str(ctx.guild.id)][name]
 	stat = stat.title()
 	if stat not in ("Str", "Con", "Dex", "Agi", "Per", "Int", "Wis"):
 		await ctx.send(stat + " is not a valid statistic.")
@@ -1252,7 +1282,7 @@ def getStatTotals(receivedDict):
 @bot.command(name="leaderboard", pass_context=True, aliases=["Leaderboard", "lb", "LB"])
 async def playerLeaderboard(ctx, lbType="Stats"):
 	lbType = lbType.title()
-	temp = db[ctx.guild.name]
+	temp = db[str(ctx.guild.id)]
 	topTen = []
 	if lbType == "Stats":
 		x = dict(sorted(temp, key=lambda n: getStatTotals(temp[n])))
@@ -1366,5 +1396,27 @@ async def allPerms(ctx, roleName="Roleban"):
         
 
 
+
+print(db.keys())
+
+# Data Migration Code
+
+# db["846225388551405590"] = {}
+# placeholder = dict(db["Astral Fantasy (The Fortress)"])
+# for key1, val1 in placeholder.items():
+# 	val1 = dict(val1)
+# 	val1["Energies"] = dict(val1["Energies"])
+# 	for key2, val2 in val1["Energies"].items():
+# 		val1["Energies"][key2] = list(val2)
+# 	val1["Titles"] = list(val1["Titles"])
+# 	val1["Skills"] = dict(val1["Skills"])
+# 	val1["Currencies"] = dict(val1["Currencies"])
+# 	val1["Abilities"] = dict(val1["Abilities"])
+# 	val1["Item Bonuses"] = dict(val1["Item Bonuses"])
+# 	for key2, val2 in val1["Item Bonuses"].items():
+# 		val1["Item Bonuses"][key2] = dict(val2)
+# 	db["846225388551405590"][key1] = val1
+
+# print(db["846225388551405590"] == db["Astral Fantasy (The Fortress)"])
 
 bot.run(token)
