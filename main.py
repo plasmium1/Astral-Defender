@@ -106,7 +106,7 @@ t_PLUS      = r'\+'
 t_MINUS     = r'-'
 t_TIMES     = r'\*'
 t_DIVIDE    = r'/'
-t_NUMBER    = r'[0-9]+'
+t_NUMBER    = r'[0-9]+(\.([0-9])*)?'
 t_CUBE      = r'd'
 
 lexer = lex()
@@ -163,7 +163,7 @@ def compile(exp):
             l_branch = branch([exp[1], ""])
             return [l_branch[0], "(" + l_branch[1] + ")"]
     else:
-        return [int(exp), str(exp)]
+        return [float(exp), str(exp)]
 
 
 def branch(exp):
@@ -194,7 +194,7 @@ def branch(exp):
             l_branch = branch([exp[0][1], exp[1]])
             return [l_branch[0], "(" + l_branch[1] + ")"]
     else:
-        return [int(exp[0]), str(exp[0])]
+        return [float(exp[0]), str(exp[0])]
 
 
 global thisPage
@@ -462,7 +462,7 @@ async def ban(ctx, member:discord.Member, *reason):
 
 @bot.command(name="roleban", pass_context=True)
 @commands.cooldown(1, 15, commands.BucketType.user)
-@commands.has_permissions(manage_roles=True)
+@commands.has_permissions(moderate_members=True)
 async def roleban(ctx, member:discord.Member, reason=None):
 	role = discord.utils.find(lambda r: r.name == "Lesser Agent", ctx.message.guild.roles)
 	role2 = discord.utils.find(lambda r: r.name == "Greater Agent", ctx.message.guild.roles)
@@ -482,7 +482,7 @@ async def roleban(ctx, member:discord.Member, reason=None):
 
 @bot.command(name="unroleban", pass_context=True)
 @commands.cooldown(1, 15, commands.BucketType.user)
-@commands.has_permissions(manage_roles=True)
+@commands.has_permissions(moderate_members=True)
 async def unroleban(ctx, member:discord.Member, reason=None):
 	role = discord.utils.find(lambda r: r.name == "Roleban", ctx.message.guild.roles)
 	role2 = discord.utils.find(lambda r: r.name == "Unverified", ctx.message.guild.roles)
@@ -649,7 +649,7 @@ def returnMoney(valueDict):
 	return string
 
 @bot.command(name="create-character", pass_context=True, aliases=["create-c", "Create-Character", "Create-character"])
-@commands.has_permissions(manage_roles=True)
+@commands.has_permissions(moderate_members=True)
 async def createCharacter(ctx, name="", race="", sinVirtue=""):
 	con = randint(11, 30)
 	wis = randint(11, 30)
@@ -936,7 +936,7 @@ async def roll(ctx, *args):
 	
 		parsed = parser.parse(message_inp)
 		compiled = compile(parsed)
-
+		
 		if (ctx.message.author.id == 423798867868516373):
 			embed = discord.Embed(title = "Rolling:" , description = compiled[1] + " - ∞" + "\nSum: -∞", color = 0x33FBFF)
 			embed.set_thumbnail(url="https://media.discordapp.net/attachments/843632677533777940/980579446371258418/PngItem_1087634.png?width=2138&height=1404")
@@ -972,7 +972,7 @@ async def generateInitialSkills(ctx, name="", *skillsList):
 	
 	await ctx.send(name + "'s Skills have been updated.")
 
-@bot.command(name="remove-skills", pass_context=True, aliases=["rm-s", "Remove-Skills", "Remove-skills"])
+@bot.command(name="remove-skills", pass_context=True, aliases=["rm-sk", "Remove-Skills", "Remove-skills"])
 @commands.has_permissions(administrator=True)
 async def removeSkills(ctx, name="", skill=""):
 	name = name.title()
@@ -988,6 +988,24 @@ async def removeSkills(ctx, name="", skill=""):
 		return
 	temp["Skills"].pop(skill)
 	await ctx.send(skill + " has been removed from " + name + "'s skills.")
+	
+@bot.command(name="rename-skills", pass_context=True, aliases=["rn-sk", "Rename-Skills", "Rename-skills"])
+@commands.has_permissions(administrator=True)
+async def renameSkills(ctx, name="", skill="", newName=""):
+	name = name.title()
+	skill = skill.title()
+	
+	if name not in db[str(ctx.guild.id)].keys():
+		await ctx.send(name + " is not a generated character.")
+		return
+	temp = db[str(ctx.guild.id)][name]
+
+	if skill not in temp["Skills"]:
+		await ctx.send(name + " doesn't have this skill to remove.")
+		return
+	temp["Skills"][newName] = temp["Skills"][skill]
+	del temp["Skills"][skill]
+	await ctx.send(skill + " has been renamed to " + newName + ".")
 
 @bot.command(name="add-skills", pass_context=True, aliases=["a-skills", "a-sk", "Add-Skills", "Add-skills"])
 @commands.has_permissions(administrator=True)
