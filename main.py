@@ -65,8 +65,11 @@ def actual_roll(rolls, sides):
 	sum = 0
 	counter = 0
 	
-	if (sides > 100000):
-		sides = 100000
+	if (sides > 1000):
+		sides = 1000
+
+	if (rolls > 1000):
+		rolls = 1000
 	
 	for i in range(rolls):
 		this_roll = random.randint(1, sides);
@@ -157,7 +160,7 @@ def compile(exp):
         elif (first == "d"):
             l_branch = branch([exp[1], ""])
             r_branch = branch([exp[2], ""])
-            my_roll = actual_roll(l_branch[0], r_branch[0])
+            my_roll = actual_roll(int(l_branch[0]), int(r_branch[0]))
             return [my_roll[0], l_branch[1] + "d" + r_branch[1]+ " [" + my_roll[1] + "]"]
         elif (first == "("):
             l_branch = branch([exp[1], ""])
@@ -188,7 +191,7 @@ def branch(exp):
         elif (first == "d"):
             l_branch = branch([exp[0][1], exp[1]])
             r_branch = branch([exp[0][2], exp[1]])
-            my_roll = actual_roll(l_branch[0], r_branch[0])
+            my_roll = actual_roll(int(l_branch[0]), int(r_branch[0]))
             return [my_roll[0], l_branch[1] + "d" + r_branch[1] + " [" + my_roll[1] + "]"]
         elif (first == "("):
             l_branch = branch([exp[0][1], exp[1]])
@@ -383,14 +386,15 @@ async def help(ctx, entry="", page=1):
 			
 	elif entry == "rolls":
 		embed.add_field(name="Roll", value="This command is basically a calculator that has the 4 basic arithmetic operations, and an extra operation for rolling dice.\nSyntax:\n"+
-					   	"`Addition: 			[value] + [value]`\n" +
-					   	"`Subtraction: 		 [value] - [value]`\n" +
-					   	"`Multiplication: 	  [value] * [value]`\n" +
-					   	"`Division: 			[value] / [value]`\n" +
-					   	"`Rolling: 			 [value]d[value]`\n" +
+					   	"`Addition: 			[expression] + [expression].`\n" +
+					   	"`Subtraction: 		 [expression] - [expression].`\n" +
+					   	"`Multiplication: 	  [expression] * [expression].`\n" +
+					   	"`Division: 			[expression] / [expression].`\n" +
+					   	"`Rolling: 			 [expressiond[expression]` (limited to 1000 sides and rolls).\n" +
 						"To use brackets, write `([expression])`.\n" +
-					   	"To use the command, type `>roll [expression]`, the roll command is going to automatically cut off after the 12th roll, to show all the rolls, put `NL` (stands for no limit) **at the start** of the expression (CAPITALIZATION MATTERS).\n"+
-					   	"Here is an example of the NL header used in an expression:\n`>roll NL 20d6 + 5 - 15d4`.")
+					   	"To use the command, type `>roll [expression]`.\n" +
+		 				"When showing the output, the roll oprand will automatically cut off after the 12th roll, to show all the rolls, put `-nl` **at the start** of the expression (case sensative.).\n"+
+					   	"Here is an example of the -nl header used in an expression:\n`>roll -nl 20d6 + 5 - 15d4`.")
 	elif entry == "antiraid":
 		embed.add_field(name="Anti-Scam", 				value="Automatic bot action that deletes server invites in places you don't want them, and deletes scam messages sent by other bots. Anti-scam does not activate in categories named \"RP Hubs\" or in channels named \"partners.\"", inline=False)
 		embed.add_field(name="Anti-Moderation Abuse", 	value="Bot detects moderation abuse, where a user may be deleting too many things at once. By forcing lower-ranked moderators to restrict their channel deletions and bans to 3 within a minute, the bot restricts the speed of raiders. In the case this is violated, the moderator is immediately banned.")
@@ -924,7 +928,7 @@ async def roll(ctx, *args):
 		global do_roll_limit
 		do_roll_limit = True
 		
-		if (args[0] == "NL"):
+		if (args[0] == "-nl"):
 			args = args[1::]
 			do_roll_limit = False
 			pass
@@ -1050,17 +1054,17 @@ async def deleteCharacter(ctx, name=""):
 
 @bot.command(name="add-title", pass_context=True, aliases=["a-t", "Add-Title", "Add-title"])
 @commands.has_permissions(administrator=True)
-async def addTitle(ctx, name="", title=""):
+async def addTitle(ctx, name="", *titles):
 	name = name.title()
 	if name == "":
 		await ctx.send("Please input a name.")
 		return
-	if title == "":
-		await ctx.send("Please input a title to add.")
-		return
+
 	temp = db[str(ctx.guild.id)][name]
-	temp["Titles"].append(title)
-	await ctx.send(title + " has been added to " + name + "'s titles.")
+	for i in titles:
+		if properTitle(i) not in temp["Titles"]:
+			temp["Titles"].append(properTitle(i))
+			await ctx.send(properTitle(i) + " has been added to " + name + "'s titles.")
 
 @bot.command(name="remove-title", pass_context=True, aliases=["rm-t", "Remove-Title", "Remove-title"])
 @commands.has_permissions(administrator=True)
@@ -1080,17 +1084,18 @@ async def removeTitle(ctx, name="", title=""):
 @bot.command(name="add-ability", pass_context=True, aliases=["a-a", "Add-Ability", "Add-ability"])
 @commands.has_permissions(administrator=True)
 async def addAbility(ctx, name="", *abilities):
-    name = name.title()
-    if name not in db[str(ctx.guild.id)].keys():
-        await ctx.send(name + " is not a valid character.")
-        return
-    temp = db[str(ctx.guild.id)][name]
-    a = dict(temp["Abilities"])
-    for i in abilities:
-        i = properTitle(i)
-        a.update({i:1})
-    temp["Abilities"] = a
-    await ctx.send("Added to " + name + "'s abilities")
+	name = name.title()
+	if name not in db[str(ctx.guild.id)].keys():
+		await ctx.send(name + " is not a valid character.")
+		return
+	temp = db[str(ctx.guild.id)][name]
+	a = dict(temp["Abilities"])
+	for i in abilities:
+		if i != "":
+			i = properTitle(i)
+			a.update({i:1})
+	temp["Abilities"] = a
+	await ctx.send("Added to " + name + "'s abilities")
 
 @bot.command(name="level-ability", pass_context=True, aliases=["l-a", "Level-Ability", "Level-ability"])
 @commands.has_permissions(administrator=True)
