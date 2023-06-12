@@ -348,7 +348,7 @@ class CharacterCog(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(name="copy-character", pass_context=True, aliases=["cc-c"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def copyCharacter(self, ctx, fromID=0, toID=0, name=""):
         if fromID == 0:
             print("Please enter a server ID to copy from.")
@@ -374,7 +374,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-stat",
                  pass_context=True,
                  aliases=["a-s", "Add-Stat", "Add-stat"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addStat(self, ctx, name="", *furtherStats):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -471,7 +471,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="set-stat",
                  pass_context=True,
                  aliases=["s-s", "Set-Stat", "Set-stat"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def setStat(self, ctx, name="", *furtherStats):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -577,7 +577,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="rename-character",
                  pass_context=True,
                  aliases=["r-c", "Rename-Character", "Rename-character"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def renameCharacter(self, ctx, name="", newName=""):
         name = name.title()
         newName = newName.title()
@@ -617,7 +617,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="set-race",
                  pass_context=True,
                  aliases=["s-r", "Set-Race", "Set-race"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def setRace(self, ctx, name="", race=""):
         name = name.title()
         race = race.title()
@@ -640,7 +640,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="generate-skills",
                  pass_context=True,
                  aliases=["g-s", "Generate-Skills", "Generate-skills"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def generateInitialSkills(self, ctx, name="", *skillsList):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -667,7 +667,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="remove-skills",
                  pass_context=True,
                  aliases=["rm-sk", "Remove-Skills", "Remove-skills"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeSkills(self, ctx, name="", skill=""):
         name = name.title()
         skill = skill.title()
@@ -686,7 +686,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="rename-skills",
                  pass_context=True,
                  aliases=["rn-sk", "Rename-Skills", "Rename-skills"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def renameSkills(self, ctx, name="", skill="", newName=""):
         name = name.title()
         skill = skill.title()
@@ -706,7 +706,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-skills",
                  pass_context=True,
                  aliases=["a-skills", "a-sk", "Add-Skills", "Add-skills"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addToSkills(self, ctx, name, *skills):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -753,7 +753,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-title",
                  pass_context=True,
                  aliases=["a-t", "Add-Title", "Add-title"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addTitle(self, ctx, name="", *titles):
         name = name.title()
         if name == "":
@@ -771,7 +771,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="remove-title",
                  pass_context=True,
                  aliases=["rm-t", "Remove-Title", "Remove-title"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeTitle(self, ctx, name="", title=""):
         name = name.title()
         if name == "":
@@ -787,7 +787,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-ability",
                  pass_context=True,
                  aliases=["a-a", "Add-Ability", "Add-ability"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addAbility(self, ctx, name="", *abilities):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -805,7 +805,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="level-ability",
                  pass_context=True,
                  aliases=["l-a", "Level-Ability", "Level-ability"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def levelAbility(self, ctx, name="", ability="", level=0):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -826,7 +826,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="remove-ability",
                  pass_context=True,
                  aliases=["rm-a", "Remove-Ability", "Remove-ability"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeAbility(self, ctx, name="", ability=""):
         name = name.title()
         ability = ability.title()
@@ -845,7 +845,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-energy",
                  pass_context=True,
                  aliases=["a-e", "Add-Energy", "Add-energy"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addEnergy(self, ctx, name="", energy="", startingMaximum=100):
         name = name.title()
         energy = energy.upper()
@@ -895,7 +895,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="remove-energy",
                  pass_context=True,
                  aliases=["rm-e", "Remove-Energy", "Remove-energy"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeEnergy(self, ctx, name="", energy=""):
         name = name.title()
         energy = energy.upper()
@@ -927,7 +927,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-currency",
                  pass_context=True,
                  aliases=["a-cu", "Add-Currency", "Add-currency"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addCurrency(self, ctx, name="", currency="", amount=0):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -958,7 +958,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="remove-currency",
                  pass_context=True,
                  aliases=["rm-cu", "Remove-Currency", "Remove-currency"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeCurrency(self, ctx, name="", currency=""):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -974,7 +974,7 @@ class CharacterCog(commands.Cog):
     @commands.command(name="add-item-bonus",
                  pass_context=True,
                  aliases=["a-ib", "a-i-b", "Add-Item-Bonus", "Add-item-bonus"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def addItemBonus(self, ctx,
                            name="",
                            itemBonusName="",
@@ -1047,7 +1047,7 @@ class CharacterCog(commands.Cog):
         name="remove-item-bonus",
         pass_context=True,
         aliases=["rm-ib", "rm-i-b", "Remove-Item-Bonus", "Remove-item-bonus"])
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def removeItemBonus(self, ctx, name="", stat="", bonusName=""):
         name = name.title()
         if name not in db[str(ctx.guild.id)].keys():
@@ -1069,3 +1069,18 @@ class CharacterCog(commands.Cog):
         temp["Item Bonuses"][stat] = valueDict
         await ctx.send("Removed " + bonusName + " from " + stat + " of " +
                        name + ".")
+
+    # @commands.has_permissions(manage_messages=True)
+    # async def addQi(self, ctx, name="", tier="", subLevel=""):
+    #     name = name.title()
+    #     if name not in db[str(ctx.guild.id)].keys():
+    #         await ctx.send(f"{name} is not a valid character.")
+    #         return
+    #     temp = db[str(ctx.guild.id)][name]
+    #     if tier == "":
+    #         await ctx.send("Please write the requested tier.")
+    #     tier = tier.title()
+    #     try:
+    #         subLevel = int(subLevel)
+    #     except:
+    #         print("Qi tier sub-level must be an integer.")

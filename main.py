@@ -385,7 +385,7 @@ async def help(ctx, entry="", page=1):
 			embed.add_field(name="Level-Ability", 		value="Adds levels to an ability.\n**Syntax: **`>level-ability (name) (ability) (amount)`\nAka l-a")
 			embed.add_field(name="Remove-Ability",	 	value="Removes an ability from a character's abilities.\n**Syntax: **`>remove-ability (name) (ability)`\nAka rm-a")
 			embed.add_field(name="Add-Currency", 		value="Adds a currency amount (positive or negative), to a player character's currencies\n**Syntax:**`>add-currency (name) (currency abbreviation) (amount)`\nAka a-cu")
-			embed.add_field(name="Remove-Currency", 	value="Removes a currency from a character.\n**Syntax: **`>remove-currency (name) (currency abbreviation)`Aka rm-c")
+			embed.add_field(name="Remove-Currency", 	value="Removes a currency from a character.\n**Syntax: **`>remove-currency (name) (currency abbreviation)`Aka rm-cu")
 			embed.add_field(name="Page 2", 				value="Flip to Page 2 with `>help Characters 2`", inline=False)
 		elif page == 2:
 			embed.add_field(name="Add-Energy", 			value="Adds an energy type to a character.\n**Syntax: **`>add-energy (name) (energy abbreviation) [Starting maximum, default 100. Automatically based on Wis x 5 if is MP or EP.]`\nAka a-e")
@@ -565,7 +565,7 @@ async def roll(ctx, *args):
 
 #Remove qi command
 
-def getStatTotals(receivedDict):
+"""def getStatTotals(receivedDict):
 	mySum = 0
 	receivedDict = dict(receivedDict)
 	for i in ("Str", "Con", "Dex", "Agi", "Per", "Int", "Wis"):
@@ -597,7 +597,7 @@ async def playerLeaderboard(ctx, lbType="Stats"):
 			else:
 				strin += j
 		totalString += strin + "\n"
-	await ctx.send(totalString)
+	await ctx.send(totalString)"""
 		
 
 """def testLeaderboard(lbType="Stats"):
@@ -711,5 +711,6 @@ print(db.keys())
 # 	db["846225388551405590"][key1] = val1
 
 # print(db["846225388551405590"] == db["Astral Fantasy (The Fortress)"])
+
 
 bot.run(token)
