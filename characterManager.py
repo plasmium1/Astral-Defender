@@ -109,7 +109,7 @@ def returnSkills(valueDict):
                 140: "Grandmaster ",
                 180: "Legendary ",
                 200: "Ascendant ",
-                250: "Transcendant ",
+                250: "Transcendent ",
                 400: "Eminent ",
                 401: "Peerless "
             }
@@ -188,7 +188,7 @@ def properTitle(inp):
     n = 1
     for i in inp[1:-1]:
         if i.lower() not in ("in", "for", "of", "a", "an", "and", "on", "the"):
-            inp[n] = i.title()
+            inp[n] = i.capitalize()
         n += 1
     ret = ""
     for i in inp:
@@ -772,17 +772,18 @@ class CharacterCog(commands.Cog):
                  pass_context=True,
                  aliases=["rm-t", "Remove-Title", "Remove-title"])
     @commands.has_permissions(manage_messages=True)
-    async def removeTitle(self, ctx, name="", title=""):
+    async def removeTitle(self, ctx, name="", userTitle=""):
         name = name.title()
+        userTitle = properTitle(userTitle)
         if name == "":
             await ctx.send("Please input a name.")
             return
         temp = db[str(ctx.guild.id)][name]
-        if title not in temp["Titles"]:
+        if userTitle not in temp["Titles"]:
             await ctx.send(title + " is not one of " + name + "'s titles.")
             return
-        temp["Titles"].remove(title)
-        await ctx.send(title + " has been removed from " + name + "'s titles.")
+        temp["Titles"].remove(userTitle)
+        await ctx.send(userTitle + " has been removed from " + name + "'s titles.")
 
     @commands.command(name="add-ability",
                  pass_context=True,
@@ -829,7 +830,7 @@ class CharacterCog(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def removeAbility(self, ctx, name="", ability=""):
         name = name.title()
-        ability = ability.title()
+        ability = properTitle(ability)
         if name not in db[str(ctx.guild.id)].keys():
             await ctx.send(name + " is not a valid character.")
             return
