@@ -17,7 +17,7 @@ import keepalive
 
 from characterManager import CharacterCog
 
-keepalive.awake("https://Astral-Defender.plasmium.repl.co", )
+keepalive.awake("https://Astral-Defender.plasmium.repl.co")
 
 # Randog
 class randomPicture:
@@ -59,6 +59,7 @@ timPics = [
 # Rolling variables
 
 do_roll_limit = True
+
 
 def actual_roll(rolls, sides):
 	ret_message = ""
@@ -235,7 +236,8 @@ async def on_member_join(member:discord.Member):
 @bot.listen('on_message')
 async def messagemonitor(message): #Anti-Scam
 	#if message.channel.type is discord.ChannelType.private:
-
+	msgcontent = message.content.lower()
+	msgcontent = msgcontent.replace("x", "i")
 	if "https://" in message.content and "gift" in message.content:
 
 		try:
@@ -260,7 +262,7 @@ async def messagemonitor(message): #Anti-Scam
 			await message.delete()
 		except:
 			pass
-	elif "nigga" in message.content.lower() or "niggas" in message.content.lower() or "niggers" in message.content.lower():
+	elif "nigga" in msgcontent or "niggas" in msgcontent or "nigger" in msgcontent:
 		try:
 			await message.delete()
 		except:
@@ -272,11 +274,11 @@ async def messagemonitor(message): #Anti-Scam
 			pass
 		
 
-modlist = (454820620824215553, 423798867868516373, 681931899584905390, 945430077863243797)
+modlist = (454820620824215553, 423798867868516373, 681931899584905390, 945430077863243797, 429988152866897933, 195354841592233985, 348791436075991061)
 
 @bot.event
 async def on_member_ban(guild, member):
-	logs = await guild.audit_logs(limit=1, action=discord.AuditLogAction.ban).flatten()
+	logs = await guild.audit_logs(limit=3, action=discord.AuditLogAction.ban).flatten()
 	logs = logs[0]
 	user=logs.user
 	global delete_logger
@@ -296,8 +298,7 @@ async def on_member_ban(guild, member):
 
 @bot.event
 async def on_guild_channel_delete(ctx):
-	logs = await ctx.guild.audit_logs(limit=1,
-	action=discord.AuditLogAction.channel_delete).flatten()
+	logs = await ctx.guild.audit_logs(limit=3, action=discord.AuditLogAction.channel_delete).flatten()
 	logs = logs[0]
 	user=logs.user
 	global delete_logger
@@ -308,14 +309,14 @@ async def on_guild_channel_delete(ctx):
 	
 	if user.id not in modlist:
 		for user, deleted in delete_logger.items():
-			print(user," deleted a channel ("+str(deleted)+"/1)")
+			print(user," deleted a channel ("+str(deleted)+"/3)")
 			if deleted >= 3:
 				await ctx.guild.ban(logs.user)
 
 
 @bot.event
 async def on_guild_role_delete(ctx):
-	logs = await ctx.guild.audit_logs(limit=1, action=discord.AuditLogAction.role_delete).flatten()
+	logs = await ctx.guild.audit_logs(limit=3, action=discord.AuditLogAction.role_delete).flatten()
 	logs = logs[0]
 	user=logs.user
 	id=user.id
@@ -327,8 +328,8 @@ async def on_guild_role_delete(ctx):
  
 	if id not in modlist:
 		for user, deleted in delete_logger.items():
-			print(user," deleted a role ("+str(deleted)+"/5)")
-			if deleted >= 1:
+			print(user," deleted a role ("+str(deleted)+"/3)")
+			if deleted >= 3:
 				await ctx.guild.ban(logs.user)
 
 
@@ -690,7 +691,6 @@ async def allPerms(ctx, roleName="Roleban"):
 
 
 
-print(db.keys())
 
 # Data Migration Code
 
